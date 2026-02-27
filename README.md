@@ -111,25 +111,25 @@ CSS/XPath-селекторы для элементов страницы:
 ### Пример настройки
 
 ```javascript
-// Только финальный скриншот (экономия места)
+// Только финальный скриншот
 SCREENSHOT: {
   ENABLED: true,
-  FINAL_ONLY: true,  // ← только результат
+  FINAL_ONLY: true,
   FULL_PAGE: true,
   DIRECTORY: 'screenshots/',
 },
 
-// Все скриншоты (для отладки)
+// Все скриншоты
 SCREENSHOT: {
   ENABLED: true,
-  FINAL_ONLY: false,  // ← все этапы
+  FINAL_ONLY: false,
   FULL_PAGE: true,
   DIRECTORY: 'screenshots/',
 },
 
-// Без скриншотов (максимальная скорость)
+// Без скриншотов 
 SCREENSHOT: {
-  ENABLED: false,  // ← отключено полностью
+  ENABLED: false,
   FINAL_ONLY: false,
   FULL_PAGE: true,
   DIRECTORY: 'screenshots/',
