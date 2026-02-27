@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "dotenv": "^17.3.1",
+    "puppeteer": "^24.37.5",
+    "sharp": "^0.34.5"
+  },
+  "name": "pupeteer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scripts/login-flow.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:env": "node tests/test-env.js",
+    "start": "node scripts/login-flow.js",
+    "start:human": "HUMAN_SIMULATION=true node scripts/login-flow.js",
+    "start:bot": "HUMAN_SIMULATION=false node scripts/login-flow.js",
+    "start:debug": "LOG_LEVEL=DEBUG node scripts/login-flow.js",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

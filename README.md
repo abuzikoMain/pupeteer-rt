@@ -1,0 +1,131 @@
+# Автоматизация входа на сайт РТ
+
+Node.js-скрипт для автоматизации авторизации на портале РТ с использованием Puppeteer.
+
+---
+
+## Быстрый запуск
+
+### 1. Установка Node.js (если не установлен)
+
+**Проверка текущей версии:**
+```bash
+node -v
+npm -v
+```
+
+**Установка:**
+
+nodejs - [Документация](https://nodejs.org/en/download/current)
+
+
+### 2. Установка зависимостей
+
+```bash
+npm install
+```
+
+### 3. Настройка .env
+
+Создайте файл `.env` в корне проекта:
+
+```env
+# Обязательные поля
+PHONE=79991234567
+PASSWORD=ваш_пароль
+
+# Опционально: уровень логирования (DEBUG, INFO, SUCCESS, WARN, ERROR)
+LOG_LEVEL=INFO
+```
+
+> Файл `.env` **не должен** попадать в репозиторий — он уже в `.gitignore`.
+
+### 4. Запуск скрипта
+
+```bash
+npm start
+
+# С отладочными логами
+LOG_LEVEL=DEBUG npm start
+
+# В фоновом режиме (Linux/macOS)
+nohup npm start > logs/app.log 2>&1 &
+```
+
+## Требования
+
+- npm **v11.10.1** или выше
+- Chrome/Chromium (устанавливается автоматически с puppeteer)
+
+## Константы (config/constants.js)
+
+### SITE
+| Константа | Описание | Пример |
+|-----------|----------|--------|
+| `BASE_URL` | Адрес главной страницы сайта | `https://archangelsk.rt.ru/` |
+| `LOGIN_DOMAIN` | Домен сервиса авторизации | `auth.rt.ru` |
+| `TARGET_URL` | Целевой URL после успешного входа | `https://lk.rt.ru` |
+
+### TIMINGS (тайминги в миллисекундах)
+| Константа | Значение по умолчанию | Описание |
+|-----------|----------------------|----------|
+| `PAGE_LOAD_DELAY` | 2000 | Пауза после загрузки страницы |
+| `INPUT_FILL_DELAY` | 500 | Пауза после ввода текста в поле |
+| `FORM_TOGGLE_DELAY` | 2000 | Пауза после переключения формы |
+| `FORM_SUBMIT_DELAY` | 5000 | Пауза после отправки формы |
+| `BROWSER_CLOSE_DELAY` | 5000 | Пауза перед закрытием браузера |
+| `ELEMENT_WAIT_TIMEOUT` | 10000 | Максимальное время ожидания элемента |
+| `PAGE_LOAD_TIMEOUT` | 60000 | Таймаут загрузки страницы |
+| `NAVIGATION_TIMEOUT` | 30000 | Таймаут навигации |
+| `XPATH_WAIT_TIMEOUT` | 30000 | Таймаут ожидания XPath |
+| `XPATH_RETRY_INTERVAL` | 500 | Интервал повторной проверки XPath |
+
+### SELECTORS
+CSS/XPath-селекторы для элементов страницы:
+- `LOGIN_LINK` — ссылка для перехода к авторизации
+- `SHOW_PASSWORD_FORM_BTN` — кнопка переключения на форму с паролем
+- `FORM_FIELDS.PHONE` / `PASSWORD` — поля ввода
+- `SUBMIT_BTN` — кнопка отправки формы
+- `ERROR_MESSAGES` — селекторы для сообщений об ошибках
+
+### SCREENSHOT
+| Константа | Тип | По умолчанию | Описание |
+|-----------|-----|--------------|----------|
+| `ENABLED` | boolean | `true` | Включить/выключить создание скриншотов |
+| `FULL_PAGE` | boolean | `true` | Скриншот всей страницы или только viewport |
+| `DIRECTORY` | string | `'screenshots/'` | Папка для сохранения скриншотов |
+| `FINAL_ONLY` | boolean | `false` | **НОВОЕ:** если `true` — сохранять только финальный скриншот (личный кабинет или ошибка) |
+
+### Пример настройки
+
+```javascript
+// Только финальный скриншот (экономия места)
+SCREENSHOT: {
+  ENABLED: true,
+  FINAL_ONLY: true,  // ← только результат
+  FULL_PAGE: true,
+  DIRECTORY: 'screenshots/',
+},
+
+// Все скриншоты (для отладки)
+SCREENSHOT: {
+  ENABLED: true,
+  FINAL_ONLY: false,  // ← все этапы
+  FULL_PAGE: true,
+  DIRECTORY: 'screenshots/',
+},
+
+// Без скриншотов (максимальная скорость)
+SCREENSHOT: {
+  ENABLED: false,  // ← отключено полностью
+  FINAL_ONLY: false,
+  FULL_PAGE: true,
+  DIRECTORY: 'screenshots/',
+},
+```
+### BROWSER
+Настройки Puppeteer:
+- `HEADLESS` — запуск в фоновом режиме (без окна)
+- `VIEWPORT_WIDTH` / `HEIGHT` — размер окна браузера
+- `USER_AGENT` — строка User-Agent
+- `ARGS` — дополнительные аргументы запуска Chrome
